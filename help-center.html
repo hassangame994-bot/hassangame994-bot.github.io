@@ -195,7 +195,7 @@
       { key: 'other', icon: 'fa-circle-question', title: 'مشكلة أخرى غير مذكورة', desc: 'اشرح مشكلتك بالتفصيل وسنراجعها في أقرب وقت' },
     ];
 
-    const slug = decodeURIComponent(window.location.pathname.split('/').filter(Boolean)[1] || '');
+    const slug = new URLSearchParams(window.location.search).get('slug') || decodeURIComponent(window.location.pathname.split('/').filter(Boolean)[1] || '');
     let cloudinaryConfig = null;
     let selectedFile = null;
 
@@ -382,8 +382,8 @@
         return;
       }
 
-      $('hc-back-store').href = '/store/' + encodeURIComponent(slug);
-      $('hc-login-link').href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+      $('hc-back-store').href = '/store.html?slug=' + encodeURIComponent(slug);
+      $('hc-login-link').href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
 
       const res = await App.fetchAPI(`/api/stores/${encodeURIComponent(slug)}?page=1&limit=1`);
       if (!res.ok || !res.data) {
