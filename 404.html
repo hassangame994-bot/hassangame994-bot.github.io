@@ -3,6 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // GitHub Pages لا يملك مسارات السيرفر (/store/slug)، فنحوّلها لملفات الواجهة الحقيقية
+    (function () {
+      var m = location.pathname.match(/^\/store\/([^\/]+)(\/help)?\/?$/);
+      if (m) {
+        location.replace((m[2] ? '/help-center.html' : '/store.html') + '?slug=' + encodeURIComponent(decodeURIComponent(m[1])));
+      }
+    })();
+  </script>
   <title>الصفحة غير موجودة | سوق </title>
   <meta name="description" content="عذراً، الصفحة التي تبحث عنها في سوق مكسب  غير متوفرة أو تم نقلها.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
