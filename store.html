@@ -25,7 +25,7 @@
       document.getElementById('store-page-content').innerHTML = `<div class="empty-state-box"><i class="fa-solid fa-store-slash empty-state-icon"></i><h1>المتجر غير متاح</h1><p>${App.escapeHtml(message)}</p><a href="/products.html" class="button btn-accent">تصفح المنتجات</a></div>`;
     }
     async function loadStore(page) {
-      const slug = window.location.pathname.split('/').filter(Boolean)[1] || '';
+      const slug = new URLSearchParams(window.location.search).get('slug') || decodeURIComponent(window.location.pathname.split('/').filter(Boolean)[1] || '');
       if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return renderError('رابط المتجر غير صحيح.');
       const res = await App.fetchAPI(`/api/stores/${encodeURIComponent(slug)}?page=${page || 1}&limit=12`);
       if (!res.ok || !res.data) return renderError(res.status === 404 ? 'هذا المتجر غير موجود أو لم يعد متاحاً.' : res.message);
@@ -39,7 +39,7 @@
               <p style="white-space:pre-line;color:var(--text-secondary);line-height:1.7;max-width:780px">${App.escapeHtml(s.description || 'لا يوجد وصف مضاف لهذا المتجر بعد.')}</p></div>
             <span class="badge ${s.verification_status === 'verified' ? 'badge-certified' : 'badge-neutral'}"><i class="fa-solid fa-circle-check"></i> ${s.verification_status === 'verified' ? 'بائع موثّق' : 'بائع'}</span>
           </div>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px"><span style="font-weight:700">${rating}</span>${contactLink('phone', s.phone, 'اتصال', 'fa-phone')}${contactLink('whatsapp', s.whatsapp, 'واتساب', 'fa-comment')}${contactLink('location', s.location, 'الموقع', 'fa-location-dot')}<a class="button btn-accent btn-sm" href="/store/${encodeURIComponent(s.slug)}/help"><i class="fa-solid fa-headset"></i> مركز حل المشاكل</a></div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px"><span style="font-weight:700">${rating}</span>${contactLink('phone', s.phone, 'اتصال', 'fa-phone')}${contactLink('whatsapp', s.whatsapp, 'واتساب', 'fa-comment')}${contactLink('location', s.location, 'الموقع', 'fa-location-dot')}<a class="button btn-accent btn-sm" href="/help-center.html?slug=${encodeURIComponent(s.slug)}"><i class="fa-solid fa-headset"></i> مركز حل المشاكل</a></div>
         </section>
         <section><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px"><h2 style="font-size:22px;font-weight:800">منتجات المتجر</h2><span style="color:var(--text-secondary)">${res.pagination.totalProducts} منتج متاح</span></div>
           <div class="product-grid">${products.length ? products.map(App.productCard).join('') : '<div class="empty-state-box" style="grid-column:1/-1"><i class="fa-solid fa-box-open empty-state-icon"></i><h2>لا توجد منتجات متاحة حالياً</h2></div>'}</div>
