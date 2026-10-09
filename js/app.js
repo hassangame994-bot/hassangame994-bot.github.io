@@ -169,7 +169,7 @@
       if (!user) {
         showToast('يرجى تسجيل الدخول أولاً للوصول لهذه الصفحة', 'warning');
         setTimeout(function () {
-          window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+          window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
         }, 800);
         return null;
       }
@@ -723,7 +723,7 @@
       : low ? '<span class="card-condition card-stock-low"><i class="fa-solid fa-circle-exclamation"></i> متبقي ' + qty + ' فقط</span>'
       : '<span class="card-condition"><i class="fa-solid fa-circle-check"></i> مفحوص ومتوفر</span>';
     var storeLink = p.store_slug
-      ? '<a href="/store/' + encodeURIComponent(p.store_slug) + '" class="card-shipping" style="color:var(--link); font-weight:700;"><i class="fa-solid fa-store"></i><span>زيارة المتجر</span></a>'
+      ? '<a href="/store.html?slug=' + encodeURIComponent(p.store_slug) + '" class="card-shipping" style="color:var(--link); font-weight:700;"><i class="fa-solid fa-store"></i><span>زيارة المتجر</span></a>'
       : '';
     return '<div class="product-card' + (out ? ' is-out-of-stock' : '') + '">' +
       '<div class="card-top-badges">' + (hasDiscount ? '<span class="badge badge-discount">توفير ' + p.discount + '%</span>' : '<span></span>') + '</div>' +
