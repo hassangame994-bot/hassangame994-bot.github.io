@@ -208,7 +208,7 @@
               <tbody>
                 <tr>
                   <th>اسم البائع المعتمد</th>
-                  <td>${p.store_slug ? `<a href="/store/${encodeURIComponent(p.store_slug)}"><i class="fa-solid fa-store"></i> ${App.escapeHtml(p.seller_name || 'بائع موثوق')} — زيارة المتجر</a>` : App.escapeHtml(p.seller_name || 'بائع موثوق')}</td>
+                  <td>${p.store_slug ? `<a href="/store.html?slug=${encodeURIComponent(p.store_slug)}"><i class="fa-solid fa-store"></i> ${App.escapeHtml(p.seller_name || 'بائع موثوق')} — زيارة المتجر</a>` : App.escapeHtml(p.seller_name || 'بائع موثوق')}</td>
                 </tr>
                 <tr>
                   <th>تاريخ الإدراج في السوق</th>
