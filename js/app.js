@@ -9,6 +9,18 @@
 (function () {
   'use strict';
 
+  // ---------------------------------------------------------------------------
+  // 0. Server config — غيّر رابط السيرفر من هنا فقط (بدون / في النهاية)
+  // ---------------------------------------------------------------------------
+  var API_BASE_URL = 'https://maksib.up.railway.app';
+
+  /** يحوّل مسار مثل /api/xxx إلى رابط كامل على السيرفر. الروابط الكاملة (http/https) تبقى كما هي. */
+  function apiUrl(path) {
+    path = String(path || '');
+    if (/^https?:\/\//i.test(path)) return path;
+    return API_BASE_URL.replace(/\/+$/, '') + (path.charAt(0) === '/' ? path : '/' + path);
+  }
+
   var FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">' +
     '<rect width="500" height="500" fill="#F3F4F6"/>' +
@@ -108,7 +120,7 @@
     });
 
     try {
-      var response = await fetch(url, config);
+      var response = await fetch(apiUrl(url), config);
       var data = await response.json().catch(function () { return {}; });
 
       if (!response.ok) {
@@ -535,7 +547,7 @@
   function initSocket(user) {
     if (typeof io === 'undefined') return;
     try {
-      var socket = io({ transports: ['websocket'], withCredentials: true });
+      var socket = io(API_BASE_URL, { transports: ['websocket'], withCredentials: true });
       socket.on('connect', function () {
         socket.emit('join_users');
         if (user && (user.role === 'super_admin' || user.role === 'admin')) socket.emit('join_admin');
@@ -757,6 +769,8 @@
     productCard: productCard,
     showToast: showToast,
     fetchAPI: fetchAPI,
+    apiUrl: apiUrl,
+    API_BASE_URL: API_BASE_URL,
     safeDecode: safeDecode,
     imgFallback: imgFallback,
     FALLBACK_IMG: FALLBACK_IMG,
